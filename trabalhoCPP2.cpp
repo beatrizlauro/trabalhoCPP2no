@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ struct dt_nasc{
 
 struct dt_associacao{
 	int ass_dia;
+	int cpf;
 	int ass_mes;
 	int ass_ano;	
 };
@@ -59,7 +61,8 @@ struct visitante{
 int main()
 {
 	int op=0;
-	int i=0
+	int i=0;
+	int a=0;
 	pessoa cad_pessoa[100];
 	dt_nasc nascimento[100];
 	endereco cad_enderecos[100];
@@ -80,9 +83,9 @@ int main()
 		cout << "7- Sair\n";
 		cin >> op;
 		cout << "\n\n\n";
-		cout << "OBS: Para adicionar um associado, dependente ou visitante,   necess rio cadastrar o individuo antes!\n"
+		cout << "OBS: Para adicionar um associado, dependente ou visitante,   necess rio cadastrar o individuo antes!\n";
 		cout << "============================================"<<endl;
-	} while(op!=7)
+	} while(op!=7);
 	return 0;
 }
 
@@ -99,45 +102,45 @@ void cadastroPessoa(pessoa cad_pessoa[], endereco cad_endereco[], dt_nasc nascim
 	getline(cin, cad_pessoa[i].nome);
 	cadastroPessoa_stream << "Nome: " << cad_pessoa[i].nome<<"\n";
 	
-	cout << "Insira o dia que voc  nasceu: "<<endl;
+	cout << "Insira o dia que você nasceu: "<<endl;
 	cin >> nascimento[i].dia;
-	cadastroPessoa_stream << "Data nasc "<< cad_pessoa[i].dia<<"/";
-	cout << "Insira o dia que voc  nasceu: "<<endl;
+	cadastroPessoa_stream << "Data nasc "<< nascimento[i].dia<<"/";
+	cout << "Insira o dia que você nasceu: "<<endl;
 	cin >> nascimento[i].mes;
-	cadastroPessoa_stream << cad_pessoa[i].dia<<"/";
+	cadastroPessoa_stream << nascimento[i].mes<<"/";
 	cout << "Insira o dia que voc  nasceu: "<<endl;
 	cin >> nascimento[i].ano;
-	cadastroPessoa_stream << cad_pessoa[i].dia<<"\n";
+	cadastroPessoa_stream << narcimento[i].ano<<"\n";
 	
-	cout << "Insira o bairro em que voc  reside: "<<endl;
-	getline(cin, cad_endereco[i].bairro);
-	cadastroPessoa_stream << "Bairro "<< cad_endereco[i].bairro<<"\n";
+	cout << "Insira o bairro em que você reside: "<<endl;
+	getline(cin, cad_enderecos[i].bairro);
+	cadastroPessoa_stream << "Bairro "<< cad_enderecos[i].bairro<<"\n";
 	cout << "Insira a rua em que voc  reside: "<<endl;
-	getline(cin, cad_endereco[i].rua);
-	cadastroPessoa_stream << "Rua "<< cad_endereco[i].rua<<"\n";
+	getline(cin, cad_enderecos[i].rua);
+	cadastroPessoa_stream << "Rua "<< cad_enderecos[i].rua<<"\n";
 	cout << "Insira a cidade em que voc  reside: "<<endl;
-	getline(cin, cad_endereco[i].cidade);
-	cadastroPessoa_stream << "Cidade "<< cad_endereco[i].cidade<<"\n";
+	getline(cin, cad_enderecos[i].cidade);
+	cadastroPessoa_stream << "Cidade "<< cad_enderecos[i].cidade<<"\n";
 	
 	cout << "Insira o estado em que voc  reside: "<<endl;
-	getline(cin, cad_endereco[i].estado);
-	cadastroPessoa_stream << "Estado "<< cad_endereco[i].estado<<"\n";
+	getline(cin, cad_enderecos[i].estado);
+	cadastroPessoa_stream << "Estado "<< cad_enderecos[i].estado<<"\n";
 	
 	cout << "Insira o numero da casa em que voc  reside: "<<endl;
-	getline(cin, cad_endereco[i].num);
-	cadastroPessoa_stream << "Numero da casa "<< cad_endereco[i].num<<"\n";
+	getline(cin, cad_enderecos[i].num);
+	cadastroPessoa_stream << "Numero da casa "<< cad_enderecos[i].num<<"\n";
 	
 	cout << "Insira o seu gênero (M/F): "<<endl;
 	cin >> cad_pessoa[i].sexo;
-	cadastroPessoa_stream << "Gênero "<< cad_endereco[i].sexo<<"\n";
+	cadastroPessoa_stream << "Gênero "<< cad_pessoa[i].sexo<<"\n";
 	
 	cout << "Insira seu telefone para contato: " << endl;
 	cin >> cad_pessoa[i].telefone;
-	cadastroPessoa_stream << "Telefone "<< cad_endereco[i].telefone<<"\n";
+	cadastroPessoa_stream << "Telefone "<< cad_pessoa[i].telefone<<"\n";
 	
 	cout << "Insira seu email: "<<endl;
 	cin << cad_pessoa[i].email;
-	cadastroPessoa_stream << "Email "<< cad_endereco[i].email<<"\n";
+	cadastroPessoa_stream << "Email "<< cad_pessoa[i].email<<"\n";
 	
 	cadastroPessoa_stream << "============================================\n";
 	arquivo_stream.close()
@@ -145,21 +148,83 @@ void cadastroPessoa(pessoa cad_pessoa[], endereco cad_endereco[], dt_nasc nascim
 	i++;
 }
 
-void cad_associado(pessoa cad_pessoa[], associado cad_assos[], int &i){
+void cad_associado(pessoa cad_pessoa[], associado cad_assos[], int &i, int &a){
 	
 	int cpf_aux;
+	bool cpf_encontrado = false;
 	
 	cout << "Insira um cpf bara buscar o cadastro: "<<endl;
 	cin >> cpf_aux;
 	
-	for(int j=0; j <=cad_pessoa[i]; j++){
-		if(cpf_aux == cad_pessoa[i].cpf){
-			cout << "Cadastro encontrado!"<<endl;
-			cout << "Insira o tipo de s cio (porpriet rio/contribuinte):"<< endl;
-			cin >> cad_assos[i]
-		}
+	ifstream arquivo_stream("cadastro_pessoas.txt"); // abre o arquivo que cadastrou pessoas
+	
+	if (!arquivo_stream.is_open()){
+		cout << "Erro ao abrir o arquivo de cadastro de pessoas."<<endl;
+		return;
 	}
 	
+	while(!cadastro_pessoas.eof()){
+		cadastro_pessoas_stream >> cad_pessoa[i].cpf;
+		cadastro_pessoas_stream.ignore();
+		getline(cadastro_pessoas_stream, cad_pessoa[i].nome);
+		cadastro_pessoas_stream >> nascimento[i].dia >> "/" >> nascimento[i].mes >> "/" >> nascimento[i].ano;
+        getline(cadastro_pessoas_stream, cad_endereco[i].bairro);
+        getline(cadastro_pessoas_stream, cad_endereco[i].rua);
+		getline(cadastro_pessoas_stream, cad_endereco[i].cidade);
+		getline(cadastro_pessoas_stream, cad_endereco[i].num);
+		cadastro_pessoas_stream >> cad_pessoa[i].sexo;
+		getline(cadastro_pessoas_stream, cad_pessoa[i].telefone);
+		getline(cadastro_pessoas_stream, cad_pessoa[i].email);
+		
+		if (cpf_aux == cad_pessoa[i].cpf){
+			cout << "Arquivo encontrado!"<<endl;
+			cadastro_pessoas_stream.close();
+			
+			ifstream arquivo_associados_stream("cadastro_associados.txt", ios::app);
+			
+				if (!arquivo_associados_stream.is_open()){
+				cout << "Erro ao abrir o arquivo de cadastro de associados."<<endl;
+				return;
+		}
+		
+		cad_assos[a].cpf = cad_pessoa[i].cpf;
+		arquivo_associados_stream << "CPF: " << cad_pessoa[a]<< "\n";
+		arquivo_associados_stream << "Nome: " << cad_pessoa[i].nome << "\n";
+		arquivo_associados_stream << "Data nasc: "<< nascimento[i].dia<<"/"<< nascimento[i].mes<<"/"<< nascimento[i].ano<<"/";
+		arquivo_associados_stream << "Bairro: "<< cad_endereco[i].bairro<<"\n";
+		arquivo_associados_stream << "Rua: "<< cad_endereco[i].rua<<"\n";
+		arquivo_associados_stream << "Cidade: "<< cad_endereco[i].cidade<<"\n";
+		arquivo_associados_stream << "Número: "<< cad_endereco[i].numero<<"\n";
+		arquivo_associados_stream << "Gênero: "<< cad_pessoa[i].sexo<<"\n";
+		arquivo_associados_stream << "Telefone: "<< cad_pessoa[i].telefone<<"\n";
+		arquivo_associados_stream << "Email: "<< cad_pessoa[i].email<<"\n";
+		
+		cout << "Insira o tipo de sócio(proprietário/contribuinte): ";
+		cin >> cad_assos[a].tipo_socio;
+		arquivo_associados_stream << "Tipo de sócio: "<< cad_assos[a].tipo_socio<<"\n";
+		cout << "Mensalidade: ";
+		cin >> cad_assos[a].mensalidade;
+		cout << "Associado cadastrado com sucesso! Código do associado: " << cad_assos[a].codigo_associado << endl;
+		a++;
+		cpf_cadastrado = true;
+		break;
+	}
 	
+		i++;
+		
+	}
+	
+	if (!cpf_encontrado){
+		cout << "CPF não encontrado no cadastro." << endl;
+	}
+	
+	while (!arquivo_pessoas_stream.eof()) {
+        arquivo_pessoas_stream >> cad_pessoa[i].cpf;
+        arquivo_pessoas_stream.ignore();
+        getline(arquivo_pessoas_stream, cad_pessoa[i].nome);
+        arquivo_pessoas_stream >> nascimento[i].dia >> nascimento[i].mes >> nascimento[i].ano;
+        getline(arquivo_pessoas_stream, cad_endereco[i].bairro);
+        getline(arquivo_pessoas_stream, cad_endereco[i].rua);
+        getline(arquivo_pessoas_stream, cad_endereco;
 	
 }
