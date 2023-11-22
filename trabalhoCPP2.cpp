@@ -90,7 +90,7 @@ int main()
 }
 
 void cadastroPessoa(pessoa cad_pessoa[], endereco cad_endereco[], dt_nasc nascimento[], pessoa cad_pessoa[], int &i, const string &){
-	
+	fstream arquivo;
 	fstream cadastroPessoa_stream(arquivo, ios::app | ios::out); //abre o arquivo
 	
 	cout << "Insira seu cpf: "<<endl;
@@ -143,7 +143,7 @@ void cadastroPessoa(pessoa cad_pessoa[], endereco cad_endereco[], dt_nasc nascim
 	cadastroPessoa_stream << "Email "<< cad_pessoa[i].email<<"\n";
 	
 	cadastroPessoa_stream << "============================================\n";
-	arquivo_stream.close()
+	cadastroPessoa_stream.close();
 	
 	i++;
 }
@@ -164,21 +164,21 @@ void cad_associado(pessoa cad_pessoa[], associado cad_assos[], int &i, int &a){
 	}
 	
 	while(!cadastro_pessoas.eof()){
-		cadastro_pessoas_stream >> cad_pessoa[i].cpf;
-		cadastro_pessoas_stream.ignore();
-		getline(cadastro_pessoas_stream, cad_pessoa[i].nome);
-		cadastro_pessoas_stream >> nascimento[i].dia >> "/" >> nascimento[i].mes >> "/" >> nascimento[i].ano;
-        getline(cadastro_pessoas_stream, cad_endereco[i].bairro);
-        getline(cadastro_pessoas_stream, cad_endereco[i].rua);
-		getline(cadastro_pessoas_stream, cad_endereco[i].cidade);
-		getline(cadastro_pessoas_stream, cad_endereco[i].num);
-		cadastro_pessoas_stream >> cad_pessoa[i].sexo;
-		getline(cadastro_pessoas_stream, cad_pessoa[i].telefone);
-		getline(cadastro_pessoas_stream, cad_pessoa[i].email);
+		cadastroPessoas_stream >> cad_pessoa[i].cpf;
+		cadastroPessoas_stream.ignore();
+		getline(cadastroPessoas_stream, cad_pessoa[i].nome);
+		cadastroPessoas_stream >> nascimento[i].dia >> "/" >> nascimento[i].mes >> "/" >> nascimento[i].ano;
+        getline(cadastroPessoas_stream, cad_endereco[i].bairro);
+        getline(cadastroPessoas_stream, cad_endereco[i].rua);
+		getline(cadastroPessoas_stream, cad_endereco[i].cidade);
+		getline(cadastroPessoas_stream, cad_endereco[i].num);
+		cadastroPessoas_stream >> cad_pessoa[i].sexo;
+		getline(cadastroPessoas_stream, cad_pessoa[i].telefone);
+		getline(cadastroPessoas_stream, cad_pessoa[i].email);
 		
 		if (cpf_aux == cad_pessoa[i].cpf){
 			cout << "Arquivo encontrado!"<<endl;
-			cadastro_pessoas_stream.close();
+			cadastroPessoas_stream.close();
 			
 			ifstream arquivo_associados_stream("cadastro_associados.txt", ios::app);
 			
@@ -218,13 +218,13 @@ void cad_associado(pessoa cad_pessoa[], associado cad_assos[], int &i, int &a){
 		cout << "CPF não encontrado no cadastro." << endl;
 	}
 	
-	while (!arquivo_pessoas_stream.eof()) {
-        arquivo_pessoas_stream >> cad_pessoa[i].cpf;
-        arquivo_pessoas_stream.ignore();
-        getline(arquivo_pessoas_stream, cad_pessoa[i].nome);
-        arquivo_pessoas_stream >> nascimento[i].dia >> nascimento[i].mes >> nascimento[i].ano;
-        getline(arquivo_pessoas_stream, cad_endereco[i].bairro);
-        getline(arquivo_pessoas_stream, cad_endereco[i].rua);
-        getline(arquivo_pessoas_stream, cad_endereco;
+	while (!cadastroPessoas_stream.eof()) {
+        cadastroPessoas_stream >> cad_pessoa[i].cpf;
+        cadastroPessoas_stream.ignore();
+        getline(cadastroPessoas_stream, cad_pessoa[i].nome);
+        cadastroPessoas_stream >> nascimento[i].dia >> nascimento[i].mes >> nascimento[i].ano;
+        getline(cadastroPessoas_stream, cad_endereco[i].bairro);
+        getline(cadastroPessoas_stream, cad_endereco[i].rua);
+        getline(cadastroPessoas_stream, cad_endereco;
 	
 }
